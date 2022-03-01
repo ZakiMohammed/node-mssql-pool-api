@@ -1,6 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
-const getConfigs = require('./data-access/pool-configs');
+const getConfigs = require('./data-access/data-config');
 const poolManager = require('./data-access/pool-manager');
 
 const app = express();
@@ -10,9 +10,9 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const poolConfig = getConfigs()
-poolManager.set(poolConfig.uk.name, poolConfig.uk.config)
-poolManager.set(poolConfig.siberia.name, poolConfig.siberia.config)
+const dataConfig = getConfigs()
+poolManager.set(dataConfig.uk.name, dataConfig.uk.config)
+poolManager.set(dataConfig.siberia.name, dataConfig.siberia.config)
 
 app.get('/', (req, res) => {
     res.send('<h1>🤖 Pooling with NodeJS and SQL Server</h1>');

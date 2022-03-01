@@ -1,6 +1,8 @@
 const mssql = require('mssql')
 const pools = new Map()
 
+const getAll = () => pools
+
 const get = (name) => {
     if (!pools.has(name)) {
         throw new Error(`Pool ${name} does not exist`)
@@ -14,7 +16,7 @@ const set = (name, config) => {
     }
 
     const pool = new mssql.ConnectionPool(config)
-    const close = pool.close.bind()
+    const close = pool.close.bind(pool)
     pool.close = (...args) => {
         pools.delete(name)
         return close(...args)
@@ -25,7 +27,7 @@ const set = (name, config) => {
 const close = async (name) => {
     const pool = pools.get(name)
     if (!pool) {
-        throw new Error(`Pool ${name} does not exist`)
+        throw Error(`Pool ${name} does not exist`)
     }
     await pool.close()
 }
@@ -36,9 +38,9 @@ const closeAll = async () => {
 }
 
 module.exports = {
-    pools,
-	get,
-	set,
-	close,
-	closeAll
+    getAll,
+    get,
+    set,
+    close,
+    closeAll
 };

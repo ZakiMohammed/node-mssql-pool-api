@@ -1,11 +1,12 @@
 const express = require('express')
 const dataAccess = require('../data-access/data-access')
-const getConfigs = require('../data-access/pool-configs')
+const getConfigs = require('../data-access/data-config')
+const poolManager = require('../data-access/pool-manager')
 
 const router = express.Router();
-const poolConfig = getConfigs()
-const dbUk = dataAccess(poolConfig.uk.name)
-const dbSiberia = dataAccess(poolConfig.siberia.name)
+const dataConfig = getConfigs()
+const dbUk = dataAccess(dataConfig.uk.name)
+const dbSiberia = dataAccess(dataConfig.siberia.name)
 
 router.get('/', async (req, res) => {
     try {
@@ -34,6 +35,16 @@ router.get('/:id', async (req, res) => {
         const [siberia = null] = resultSiberia.recordset;
 
         res.json({ uk, siberia })
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
+
+router.get('/close/:name', async (req, res) => {
+    try {
+        await poolManager.close(req.params.name)
+        const keys = Array.from(poolManager.getAll().keys())
+        res.json(keys)
     } catch (error) {
         res.status(500).json(error);
     }
