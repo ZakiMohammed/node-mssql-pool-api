@@ -1,4 +1,4 @@
-/****** Object:  UserDefinedTableType [dbo].[EmployeeType]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  UserDefinedTableType [dbo].[EmployeeType]    Script Date: 02-03-2022 19:22:14 ******/
 CREATE TYPE [dbo].[EmployeeType] AS TABLE(
 	[Code] [varchar](50) NOT NULL,
 	[Name] [varchar](50) NULL,
@@ -7,7 +7,7 @@ CREATE TYPE [dbo].[EmployeeType] AS TABLE(
 	[Department] [varchar](50) NULL
 )
 GO
-/****** Object:  Table [dbo].[Employee]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  Table [dbo].[Employee]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[Employee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[ViewEmployeeSalary]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  View [dbo].[ViewEmployeeSalary]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -40,7 +40,7 @@ SELECT
 FROM
 	Employee;
 GO
-/****** Object:  Table [dbo].[EmployeeHobby]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  Table [dbo].[EmployeeHobby]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -55,7 +55,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[User]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  Table [dbo].[User]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -186,7 +186,7 @@ INSERT [dbo].[User] ([Id], [UserName], [Password]) VALUES (1, N'admin', N'admin'
 GO
 SET IDENTITY_INSERT [dbo].[User] OFF
 GO
-/****** Object:  StoredProcedure [dbo].[AddEmployees]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[AddEmployees]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -206,7 +206,7 @@ BEGIN
 	SELECT * FROM Employee WHERE Id > @lastId;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[AuthenticateUser]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[AuthenticateUser]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -225,7 +225,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[GetEmployeeByDepartment]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[GetEmployeeByDepartment]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -243,7 +243,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[GetEmployeeByJob]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[GetEmployeeByJob]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -261,7 +261,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[GetEmployeesStatus]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[GetEmployeesStatus]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -288,7 +288,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[GetSalarySummary]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[GetSalarySummary]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -329,7 +329,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[SearchEmployee]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[SearchEmployee]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +347,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_EmployeePagination]    Script Date: 02-03-2022 19:20:52 ******/
+/****** Object:  StoredProcedure [dbo].[usp_EmployeePagination]    Script Date: 02-03-2022 19:22:14 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

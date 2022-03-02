@@ -1,22 +1,18 @@
 const mssql = require('mssql')
 const poolManager = require('./pool-manager')
 
-const dataAccess = (poolName) => {
-    let pool = poolManager.get(poolName)
-    
+const dataAccess = (options) => {
+    const _options = options
     return {
         run: async function (name, command, inputs = [], outputs = []) {
-            await this.connect();
-            const request = pool.request();
-            assignParams(request, inputs, outputs);
-            return request[name](command);
-        },
-        connect: async () => {
-            if (!pool) {
-                pool = new mssql.ConnectionPool(poolConfig());
-            }
-            if (!pool.connected) {
-                await pool.connect();
+            try {
+                const pool = poolManager.get(_options)
+                await pool.connect()
+                const request = pool.request();
+                assignParams(request, inputs, outputs);
+                return request[name](command);
+            } catch (error) {
+                throw error
             }
         },
         query: async function (command, inputs = [], outputs = []) {
@@ -32,6 +28,13 @@ const dataAccess = (poolName) => {
         executeEntity: async function (command, entity, outputs = []) {
             const inputs = fetchParams(entity);
             return this.run('execute', command, inputs, outputs);
+        },
+        close: async function () {
+            try {
+                await poolManager.close(_options.name)
+            } catch (error) {
+                throw error
+            }
         }
     }
 }
@@ -83,4 +86,7 @@ const generateTable = (columns, entities) => {
     return table;
 };
 
-module.exports = dataAccess;
+module.exports = {
+    dataAccess,
+    generateTable
+};

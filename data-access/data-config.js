@@ -3,7 +3,7 @@ const options = {
     enableArithAbort: false
 }
 
-const getConfigs = () => ({
+const getDataConfig = () => ({
     uk: {
         name: process.env.SQL_UK_NAME,
         config: {
@@ -28,4 +28,4 @@ const getConfigs = () => ({
     },
 })
 
-module.exports = getConfigs
+module.exports = getDataConfig

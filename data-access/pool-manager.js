@@ -1,16 +1,7 @@
 const mssql = require('mssql')
 const pools = new Map()
 
-const getAll = () => pools
-
-const get = (name) => {
-    if (!pools.has(name)) {
-        throw new Error(`Pool ${name} does not exist`)
-    }
-    return pools.get(name)
-}
-
-const set = (name, config) => {
+const set = ({ name, config }) => {
     if (!name || !config) {
         throw new Error(`Missing configuration details`)
     }
@@ -22,6 +13,13 @@ const set = (name, config) => {
         return close(...args)
     }
     pools.set(name, pool)
+}
+
+const get = (options) => {
+    if (!pools.has(options.name)) {
+        set(options)
+    }
+    return pools.get(options.name)
 }
 
 const close = async (name) => {
@@ -38,9 +36,7 @@ const closeAll = async () => {
 }
 
 module.exports = {
-    getAll,
     get,
-    set,
     close,
     closeAll
 };
