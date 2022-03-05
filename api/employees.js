@@ -1,21 +1,19 @@
 const express = require('express')
-const { dataAccess } = require('../data-access/data-access')
-const getDataConfig = require('../data-access/data-config')
 
 const router = express.Router();
-const dataConfig = getDataConfig()
-const dbUk = dataAccess(dataConfig.uk)
-const dbSiberia = dataAccess(dataConfig.siberia)
+
+const dbUk = req => req.app.locals.db.uk
+const dbSiberia = req => req.app.locals.db.siberia
 
 router.get('/', async (req, res) => {
     try {
         const command = `SELECT * FROM Employee ORDER BY Id DESC`
 
-        const uk = (await dbUk.query(command)).recordset;
-        const siberia = (await dbSiberia.query(command)).recordset;
+        const uk = (await dbUk(req).query(command)).recordset;
+        const siberia = (await dbSiberia(req).query(command)).recordset;
 
-        dbSiberia.close()
-        dbUk.close()
+        dbUk(req).close()
+        dbSiberia(req).close()
 
         res.json({ uk, siberia });
     } catch (error) {
@@ -30,10 +28,10 @@ router.get('/:id', async (req, res) => {
             { name: 'Id', value: req.params.id }
         ]
 
-        const resultUk = await dbUk.query(command, inputs);
+        const resultUk = await dbUk(req).query(command, inputs);
         const [uk = null] = resultUk.recordset;
 
-        const resultSiberia = await dbSiberia.query(command, inputs);
+        const resultSiberia = await dbSiberia(req).query(command, inputs);
         const [siberia = null] = resultSiberia.recordset;
 
         res.json({ uk, siberia })
