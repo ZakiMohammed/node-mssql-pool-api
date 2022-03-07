@@ -2,10 +2,9 @@ const mssql = require('mssql')
 const poolManager = require('./pool-manager')
 
 const dataAccess = (options) => {
-    const _options = options
-    const _run = async function (name, command, inputs = [], outputs = []) {
+    const run = async function (name, command, inputs = [], outputs = []) {
         try {
-            const pool = poolManager.get(_options)
+            const pool = poolManager.get(options)
             await pool.connect()
             const request = pool.request();
             assignParams(request, inputs, outputs);
@@ -17,22 +16,22 @@ const dataAccess = (options) => {
 
     return {
         query: async (command, inputs = [], outputs = []) => {
-            return _run('query', command, inputs, outputs);
+            return run('query', command, inputs, outputs);
         },
         queryEntity: async (command, entity, outputs = []) => {
             const inputs = fetchParams(entity);
-            return _run('query', command, inputs, outputs);
+            return run('query', command, inputs, outputs);
         },
         execute: async (command, inputs = [], outputs = []) => {
-            return _run('execute', command, inputs, outputs);
+            return run('execute', command, inputs, outputs);
         },
         executeEntity: async (command, entity, outputs = []) => {
             const inputs = fetchParams(entity);
-            return _run('execute', command, inputs, outputs);
+            return run('execute', command, inputs, outputs);
         },
         close: async () => {
             try {
-                await poolManager.close(_options.name)
+                await poolManager.close(options.name)
             } catch (error) {
                 throw error
             }
