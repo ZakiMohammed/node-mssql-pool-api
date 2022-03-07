@@ -3,33 +3,34 @@ const poolManager = require('./pool-manager')
 
 const dataAccess = (options) => {
     const _options = options
+    const _run = async function (name, command, inputs = [], outputs = []) {
+        try {
+            const pool = poolManager.get(_options)
+            await pool.connect()
+            const request = pool.request();
+            assignParams(request, inputs, outputs);
+            return request[name](command);
+        } catch (error) {
+            throw error
+        }
+    }
+
     return {
-        run: async function (name, command, inputs = [], outputs = []) {
-            try {
-                const pool = poolManager.get(_options)
-                await pool.connect()
-                const request = pool.request();
-                assignParams(request, inputs, outputs);
-                return request[name](command);
-            } catch (error) {
-                throw error
-            }
+        query: async (command, inputs = [], outputs = []) => {
+            return _run('query', command, inputs, outputs);
         },
-        query: async function (command, inputs = [], outputs = []) {
-            return this.run('query', command, inputs, outputs);
-        },
-        queryEntity: async function (command, entity, outputs = []) {
+        queryEntity: async (command, entity, outputs = []) => {
             const inputs = fetchParams(entity);
-            return this.run('query', command, inputs, outputs);
+            return _run('query', command, inputs, outputs);
         },
-        execute: async function (command, inputs = [], outputs = []) {
-            return this.run('execute', command, inputs, outputs);
+        execute: async (command, inputs = [], outputs = []) => {
+            return _run('execute', command, inputs, outputs);
         },
-        executeEntity: async function (command, entity, outputs = []) {
+        executeEntity: async (command, entity, outputs = []) => {
             const inputs = fetchParams(entity);
-            return this.run('execute', command, inputs, outputs);
+            return _run('execute', command, inputs, outputs);
         },
-        close: async function () {
+        close: async () => {
             try {
                 await poolManager.close(_options.name)
             } catch (error) {
